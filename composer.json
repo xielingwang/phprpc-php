@@ -3,6 +3,7 @@
     "type": "library",
     "description": "PHPRPC For PHP",
     "keywords": ["phprpc"],
+    "homepage": "http://phprpc.org/",
     "require": {},
     "autoload": {
         "classmap": [
