@@ -1,4 +1,4 @@
-php-phprpc
+Intro
 ==========
 
 PHPRPC for PHP
@@ -7,4 +7,4 @@ PHPRPC for PHP
 Installion
 ==============
 
-You can use `codegun/phprpc` to install with `composer.phar install`
+Add `codegun/phprpc` to `composer.json` then install with `composer.phar install`
