@@ -1,5 +1,5 @@
 {
-    "name": "phprpc/php",
+    "name": "phplib/phprpc",
     "type": "library",
     "description": "PHPRPC For PHP",
     "keywords": ["phprpc"],
