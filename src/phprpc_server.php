@@ -395,7 +395,7 @@ class PHPRPC_Server {
         }
         $this->sendCallback();
     }
-    function initSession() {
+    static function initSession() {
         @ob_start();
         ob_implicit_flush(0);
         session_start();
