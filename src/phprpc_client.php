@@ -315,11 +315,11 @@ class _PHPRPC_Client {
     function _connect() {
         if (is_null($this->_proxy)) {
             $host = (($this->_server['scheme'] == "https") ? "ssl://" : "") . $this->_server['host'];
-            $this->_socket = @fsockopen($host, $this->_server['port'], $errno, $errstr, $this->_timeout);
+            $this->_socket = @fsockopen(gethostbyname($host), $this->_server['port'], $errno, $errstr, $this->_timeout);
         }
         else {
             $host = (($this->_server['scheme'] == "https") ? "ssl://" : "") . $this->_proxy['host'];
-            $this->_socket = @fsockopen($host, $this->_proxy['port'], $errno, $errstr, $this->_timeout);
+            $this->_socket = @fsockopen(gethostbyname($host), $this->_proxy['port'], $errno, $errstr, $this->_timeout);
         }
         if ($this->_socket === false) {
             return new PHPRPC_Error($errno, $errstr);
