@@ -53,7 +53,7 @@
  * }
  */
 
-
+global $_PHPRPC_COOKIES, $_PHPRPC_COOKIE, $_PHPRPC_SID;
 $_PHPRPC_COOKIES = array();
 $_PHPRPC_COOKIE = '';
 $_PHPRPC_SID = 0;
@@ -106,15 +106,16 @@ class _PHPRPC_Client {
     var $_clientid;
     var $_http_version;
     var $_keep_alive;
+    var $_debug;
     // Public Methods
     function _PHPRPC_Client($serverURL = '') {
-        global $_PHPRPC_SID;
         require_once('compat.php');
         register_shutdown_function(array(&$this, "_disconnect"));
         $this->_proxy = NULL;
         $this->_timeout = 30;
         $this->_clientid = 'php' . rand(1 << 30, 1 << 31) . time() . $_PHPRPC_SID;
         $_PHPRPC_SID++;
+        $this->_debug = false;
         $this->_socket = false;
         if ($serverURL != '') {
             $this->useService($serverURL);
@@ -253,8 +254,15 @@ class _PHPRPC_Client {
     function getTimeout() {
         return $this->_timeout;
     }
+    function setDebug($debug) {
+        $this->_debug = $debug;
+    }
+    function getDebug() {
+        return $this->_debug;
+    }
     function invoke($funcname, &$args, $byRef = false) {
         $result = $this->_key_exchange();
+
         if (is_a($result, 'PHPRPC_Error')) {
             return $result;
         }
@@ -505,8 +513,8 @@ class _PHPRPC_Client {
                      'content_length' => $content_length,
                      'connection' => $connection);
     }
-    function _parseBody($body) {
-        $body = explode(";\r\n", $body);
+    function _parseBody($_body) {
+        $body = explode(";\r\n", $_body);
         $result = array();
         $n = count($body);
         for ($i = 0; $i < $n; $i++) {
@@ -517,6 +525,8 @@ class _PHPRPC_Client {
                 $result[$l] = trim($r, '"');
             }
         }
+        if( $this->_debug && (!is_array($body) || array_key_exists('phprpc_result', $body)) )
+          echo $_body;
         return $result;
     }
     function _key_exchange() {
